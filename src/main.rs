@@ -12,6 +12,7 @@ use std::{env,
           fs,
           io,
           io::Write,
+          path::PathBuf,
           process,
           process::Command};
 
@@ -50,6 +51,15 @@ fn main()
             if cmd.to_string() == "exit"
             {
                 process::exit(0);
+            }
+            if cmd.to_string() == "cd"
+            {
+                let p = PathBuf::from(args.join(" "));
+                if let Err(e) = env::set_current_dir(&p)
+                {
+                    eprintln!("mush: cd: {}: {}", p.display(), e);
+                }
+                continue;
             }
             match Command::new(cmd).args(args).spawn()
             {

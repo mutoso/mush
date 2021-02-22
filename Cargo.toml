@@ -1,0 +1,11 @@
+[package]
+name = "mush"
+version = "0.0.0"
+authors = ["Alastair Feille <me@alastair.se>"]
+edition = "2018"
+description = "A shell written in Rust"
+readme = "README.md"
+repository = "https://github.com/mutoso/mush"
+license = "MPL-2.0"
+
+[dependencies]

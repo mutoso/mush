@@ -1,0 +1,30 @@
+repos:
+-   repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.7
+    hooks:
+    -   id: insert-license
+        files: \.rs$
+        args:
+        - --fuzzy-match-generates-todo
+        - --license-filepath
+        - license_header.txt
+        - --comment-style
+        - /*|   |*/
+    -   id: remove-crlf
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+    -   id: check-toml
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/mutoso/pre-commit-hooks
+    rev: v0.3.0
+    hooks:
+    -   id: valid-utf8
+    -   id: cargo-fmt
+-   repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+    -   id: cargo-check
+    -   id: clippy

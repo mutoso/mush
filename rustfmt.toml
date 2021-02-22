@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: CC0-1.0
+
+brace_style = "AlwaysNextLine"
+combine_control_expr = false
+condense_wildcard_suffixes = true
+control_brace_style = "AlwaysNextLine"
+empty_item_single_line = true
+enum_discrim_align_threshold = 20
+format_code_in_doc_comments = true
+format_strings = true
+imports_granularity = "Crate"
+imports_indent = "Visual"
+imports_layout = "Vertical"
+indent_style = "Visual"
+match_block_trailing_comma = true
+newline_style = "Unix"
+reorder_impl_items = true
+struct_field_align_threshold = 20
+use_field_init_shorthand = true
+use_try_shorthand = true
+where_single_line = true
+wrap_comments = true

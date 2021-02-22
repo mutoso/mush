@@ -9,3 +9,4 @@ repository = "https://github.com/mutoso/mush"
 license = "MPL-2.0"
 
 [dependencies]
+whoami = "1"

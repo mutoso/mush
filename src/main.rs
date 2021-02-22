@@ -29,7 +29,7 @@ fn main()
                                             // Attempt to get the current path else return "???"
                                             .unwrap_or("???".into());
         // Print prompt
-        print!("{}> ", cwd);
+        print!("{}@{}:{}> ", whoami::username(), whoami::hostname(), cwd);
         io::stdout().flush().expect("failed to print prompt");
 
         // Read in line

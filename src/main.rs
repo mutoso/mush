@@ -54,7 +54,19 @@ fn main()
             }
             if cmd.to_string() == "cd"
             {
-                let p = PathBuf::from(args.join(" "));
+                let path_string = args.join(" ");
+                // if no directory is given
+                let p = if path_string.trim().is_empty()
+                {
+                    // change into the home directory
+                    dirs::home_dir().expect("can't get home directory")
+                }
+                else
+                {
+                    // use the given directory
+                    PathBuf::from(path_string)
+                };
+
                 if let Err(e) = env::set_current_dir(&p)
                 {
                     eprintln!("mush: cd: {}: {}", p.display(), e);

@@ -8,7 +8,9 @@
     SPDX-License-Identifier: MPL-2.0
 */
 
-use std::{io,
+use std::{env,
+          fs,
+          io,
           io::Write,
           process,
           process::Command};
@@ -17,8 +19,16 @@ fn main()
 {
     loop
     {
+        let cwd: String = env::current_dir().map(|p| {
+                                                // Attempt to canonicalize the path else return "???"
+                                                fs::canonicalize(p).unwrap_or("???".into())
+                                                                   .to_string_lossy()
+                                                                   .into()
+                                            })
+                                            // Attempt to get the current path else return "???"
+                                            .unwrap_or("???".into());
         // Print prompt
-        print!("> ");
+        print!("{}> ", cwd);
         io::stdout().flush().expect("failed to print prompt");
 
         // Read in line

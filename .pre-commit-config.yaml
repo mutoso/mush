@@ -27,4 +27,3 @@ repos:
     rev: v1.0
     hooks:
     -   id: cargo-check
-    -   id: clippy

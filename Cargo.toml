@@ -9,5 +9,8 @@ repository = "https://github.com/mutoso/mush"
 license = "MPL-2.0"
 
 [dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+csv = "1"
 dirs = "3"
+serde = { version = "1", features = ["derive"] }
 whoami = "1"

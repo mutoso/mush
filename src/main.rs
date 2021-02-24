@@ -16,8 +16,13 @@ use std::{env,
           process,
           process::Command};
 
+use chrono::Local;
+
+mod history;
+
 fn main()
 {
+    let session_time = Local::now();
     loop
     {
         let cwd: String = env::current_dir().map(|p| {
@@ -37,8 +42,9 @@ fn main()
         io::stdin().read_line(&mut line)
                    .expect("failed to read from stdin");
 
+        let line = line.trim();
         // Skip empty lines
-        if line.trim().is_empty()
+        if line.is_empty()
         {
             continue;
         }
@@ -48,6 +54,10 @@ fn main()
         let (head, args) = tokens.split_at(1);
         if let Some(cmd) = head.get(0)
         {
+            history::log(session_time,
+                         Local::now(),
+                         line.to_string(),
+                         env::current_dir().ok());
             if cmd.to_string() == "exit"
             {
                 process::exit(0);

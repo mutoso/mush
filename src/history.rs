@@ -22,19 +22,22 @@ use serde::Serialize;
 struct Entry
 {
     #[serde(rename = "Session started")]
-    session_time: DateTime<FixedOffset>,
+    session_time:  DateTime<FixedOffset>,
     #[serde(rename = "Command started")]
-    command_time: DateTime<FixedOffset>,
+    command_time:  DateTime<FixedOffset>,
     #[serde(rename = "Command")]
-    line:         String,
+    line:          String,
     #[serde(rename = "Current directory")]
-    cwd:          Option<PathBuf>,
+    cwd:           Option<PathBuf>,
+    #[serde(rename = "Fallback mode")]
+    fallback_mode: bool,
 }
 
 pub fn log(session_time: DateTime<Local>,
            command_time: DateTime<Local>,
            line: String,
-           cwd: Option<PathBuf>)
+           cwd: Option<PathBuf>,
+           fallback_mode: bool)
 {
     // Truncate the times to microseconds
     let session_time = session_time.trunc_subsecs(6);
@@ -43,7 +46,8 @@ pub fn log(session_time: DateTime<Local>,
     let entry = Entry { session_time: session_time.with_timezone(session_time.offset()),
                         command_time: command_time.with_timezone(command_time.offset()),
                         line,
-                        cwd };
+                        cwd,
+                        fallback_mode };
 
     let home_path = dirs::home_dir();
     if home_path.is_none()

@@ -23,6 +23,7 @@ mod history;
 fn main()
 {
     let session_time = Local::now();
+    let mut fallback_mode = false;
     loop
     {
         let cwd: String = env::current_dir().map(|p| {
@@ -34,7 +35,11 @@ fn main()
                                             // Attempt to get the current path else return "???"
                                             .unwrap_or("???".into());
         // Print prompt
-        print!("{}@{}:{}> ", whoami::username(), whoami::hostname(), cwd);
+        print!("{}{}@{}:{}> ",
+               if fallback_mode { "(bash) " } else { "" },
+               whoami::username(),
+               whoami::hostname(),
+               cwd);
         io::stdout().flush().expect("failed to print prompt");
 
         // Read in line
@@ -48,6 +53,12 @@ fn main()
         {
             continue;
         }
+        if line == "\u{0014}"
+        {
+            // toggle fallback mode
+            fallback_mode = !fallback_mode;
+            continue;
+        }
 
         // Split line into command and arguments
         let tokens: Vec<&str> = line.split_whitespace().collect();
@@ -57,7 +68,8 @@ fn main()
             history::log(session_time,
                          Local::now(),
                          line.to_string(),
-                         env::current_dir().ok());
+                         env::current_dir().ok(),
+                         fallback_mode);
             if cmd.to_string() == "exit"
             {
                 process::exit(0);
@@ -83,6 +95,14 @@ fn main()
                 }
                 continue;
             }
+            let (cmd, args) = if fallback_mode
+            {
+                (&"bash", vec!["-c", line])
+            }
+            else
+            {
+                (cmd, Vec::from(args))
+            };
             match Command::new(cmd).args(args).spawn()
             {
                 Ok(mut child) =>

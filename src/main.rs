@@ -47,6 +47,7 @@ fn main()
         io::stdin().read_line(&mut line)
                    .expect("failed to read from stdin");
 
+        let original_line = line.clone();
         let line = line.trim();
         // Skip empty lines
         if line.is_empty()
@@ -65,11 +66,15 @@ fn main()
         let (head, args) = tokens.split_at(1);
         if let Some(cmd) = head.get(0)
         {
-            history::log(session_time,
-                         Local::now(),
-                         line.to_string(),
-                         env::current_dir().ok(),
-                         fallback_mode);
+            // If the line doesn't start with a space
+            if !original_line.starts_with(char::is_whitespace)
+            {
+                history::log(session_time,
+                             Local::now(),
+                             line.to_string(),
+                             env::current_dir().ok(),
+                             fallback_mode);
+            }
             if cmd.to_string() == "exit"
             {
                 process::exit(0);

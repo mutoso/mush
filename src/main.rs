@@ -24,6 +24,9 @@ fn main()
 {
     let session_time = Local::now();
     let mut fallback_mode = false;
+
+    ctrlc::set_handler(|| ()).expect("Error setting Ctrl-C handler");
+
     loop
     {
         let cwd: String = env::current_dir().map(|p| {

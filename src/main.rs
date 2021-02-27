@@ -102,11 +102,25 @@ fn main()
             }
             let (cmd, args) = if fallback_mode
             {
-                (&"bash", vec!["-c", line])
+                let aliases =
+                    String::from_utf8_lossy(
+                                            &Command::new("bash").args(vec![
+                        "-c",
+                        "source ~/.bash_aliases 2> /dev/null; alias",
+                    ])
+                                                                 .output()
+                                                                 .expect("failed to load aliases")
+                                                                 .stdout,
+                    ).to_string();
+
+                (&"bash",
+                 vec!["-c".to_string(),
+                      format!("shopt -s expand_aliases\n{}\n{}", aliases, line)])
             }
             else
             {
-                (cmd, Vec::from(args))
+                let args: Vec<String> = args.iter().map(|s| s.to_string()).collect();
+                (cmd, args)
             };
             match Command::new(cmd).args(args).spawn()
             {
